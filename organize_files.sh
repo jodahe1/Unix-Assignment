@@ -9,6 +9,17 @@ if [ -z "$TARGET_DIR" ]; then
     exit 1
 fi
 
+# Function to display directory structure
+display_structure() {
+    echo "Current directory structure:"
+    tree "$1"
+    echo ""
+}
+
+# Display before organizing
+echo "Before organizing:"
+display_structure "$TARGET_DIR"
+
 # Navigate to the target directory
 cd "$TARGET_DIR" || exit
 
@@ -29,4 +40,6 @@ for file in *; do
     fi
 done
 
-echo "Files organized by extension and date."
+# Display after organizing
+echo "After organizing:"
+display_structure "$TARGET_DIR"
