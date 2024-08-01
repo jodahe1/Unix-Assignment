@@ -1,2 +1,2 @@
 # Unix-Assignment
-This Repository holds Unix Admin Final Project Codes
+This Repository holds Unix Adminstration course  Final Project Codes
