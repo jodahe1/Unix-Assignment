@@ -29,15 +29,20 @@ modify_user() {
         case $option in
             1)
                 read -p "Enter new username: " new_username
+                echo "Changing username from $username to $new_username."
                 usermod -l "$new_username" "$username"
-                echo "Username changed from $username to $new_username."
                 username="$new_username"  # Update variable
+                echo "Username changed successfully."
                 ;;
             2)
                 passwd "$username"
                 echo "Password updated for $username."
                 ;;
             3)
+                current_shell=$(getent passwd "$username" | cut -d: -f7)
+                echo "Current shell: $current_shell"
+                echo "Available shells:"
+                cat /etc/shells
                 read -p "Enter new shell: " shell
                 chsh -s "$shell" "$username"
                 echo "Shell for $username changed to $shell."
@@ -56,8 +61,12 @@ modify_user() {
 user_report() {
     echo "User Account Report:"
     echo "===================="
-    awk -F: '{ print $1, $3, $4, $5 }' /etc/passwd
+    printf "%-20s %-10s %-10s %-30s\n" "Username" "UID" "GID" "Comment"
+    echo "--------------------------------------------------------"
+    awk -F: '{ printf "%-20s %-10s %-10s %-30s\n", $1, $3, $4, $5 }' /etc/passwd
+    echo
     echo "Last Login Information:"
+    echo "======================="
     last
 }
 
