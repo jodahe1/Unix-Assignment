@@ -18,13 +18,38 @@ delete_user() {
 # Function to modify user properties
 modify_user() {
     read -p "Enter username to modify: " username
-    read -p "Enter new shell (or leave blank to keep current): " shell
-    if [ -n "$shell" ]; then
-        chsh -s "$shell" "$username"
-        echo "Shell for $username changed to $shell."
-    else
-        echo "No changes made to shell."
-    fi
+    while true; do
+        echo "Select property to modify:"
+        echo "1) Change username"
+        echo "2) Change password"
+        echo "3) Change shell"
+        echo "4) Exit"
+        read -p "Select an option [1-4]: " option
+
+        case $option in
+            1)
+                read -p "Enter new username: " new_username
+                usermod -l "$new_username" "$username"
+                echo "Username changed from $username to $new_username."
+                username="$new_username"  # Update variable
+                ;;
+            2)
+                passwd "$username"
+                echo "Password updated for $username."
+                ;;
+            3)
+                read -p "Enter new shell: " shell
+                chsh -s "$shell" "$username"
+                echo "Shell for $username changed to $shell."
+                ;;
+            4)
+                break
+                ;;
+            *) 
+                echo "Invalid option. Please try again." 
+                ;;
+        esac
+    done
 }
 
 # Function to generate user activity report
