@@ -2,28 +2,37 @@
 
 # Function to display CPU usage
 cpu_usage() {
-    echo "CPU Usage:"
+    echo "----------------------------------------"
+    echo "CPU Usage as of $(date):"
+    echo "----------------------------------------"
+    echo "Usage:"
     top -bn1 | grep "Cpu(s)"
     echo
 }
 
 # Function to display Memory usage
 memory_usage() {
-    echo "Memory Usage:"
+    echo "----------------------------------------"
+    echo "Memory Usage as of $(date):"
+    echo "----------------------------------------"
     free -h
     echo
 }
 
 # Function to display Disk I/O
 disk_io() {
-    echo "Disk I/O:"
-    iostat -xz 1 1
+    echo "----------------------------------------"
+    echo "Disk I/O as of $(date):"
+    echo "----------------------------------------"
+    iostat -xz 1 1 | awk 'NR==1 || NR==3 || NR==4 {print}'
     echo
 }
 
 # Function to display Network Activity
 network_activity() {
-    echo "Network Activity:"
+    echo "----------------------------------------"
+    echo "Network Activity as of $(date):"
+    echo "----------------------------------------"
     netstat -i
     echo
 }
