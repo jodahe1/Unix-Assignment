@@ -2,21 +2,34 @@
 
 # Function to create a user
 create_user() {
+    echo "Welcome to User Creation!"
     read -p "Enter username: " username
     useradd "$username"
     passwd "$username"
     echo "User $username created successfully."
+    echo -e "\n"  # Add a space after completion
 }
 
 # Function to delete a user
 delete_user() {
     read -p "Enter username to delete: " username
-    userdel -r "$username"
-    echo "User $username deleted successfully."
+
+    # Check if the user exists
+    if id "$username" &>/dev/null; then
+        if userdel -f "$username"; then
+            echo "User $username deleted successfully."
+        else
+            echo "Failed to delete user $username. Check for permission issues or running processes."
+        fi
+    else
+        echo "User $username does not exist."
+    fi
+    echo -e "\n"  # Add a space after completion
 }
 
 # Function to modify user properties
 modify_user() {
+    echo "Welcome to User Modification!"
     read -p "Enter username to modify: " username
     while true; do
         echo "Select property to modify:"
@@ -54,11 +67,13 @@ modify_user() {
                 echo "Invalid option. Please try again." 
                 ;;
         esac
+        echo -e "\n"  # Add a space after each modification
     done
 }
 
 # Function to generate user activity report
 user_report() {
+    echo "Welcome to User Activity Report!"
     echo "User Account Report:"
     echo "===================="
     printf "%-20s %-10s %-10s %-30s\n" "Username" "UID" "GID" "Comment"
@@ -68,6 +83,7 @@ user_report() {
     echo "Last Login Information:"
     echo "======================="
     last
+    echo -e "\n"  # Add a space after report completion
 }
 
 # Main menu
@@ -85,7 +101,10 @@ while true; do
         2) delete_user ;;
         3) modify_user ;;
         4) user_report ;;
-        5) exit 0 ;;
+        5) 
+            echo "Goodbye, $(whoami)!"; 
+            exit 0 ;;
         *) echo "Invalid option. Please try again." ;;
     esac
+    echo -e "\n"  # Add a space after each main menu task
 done
